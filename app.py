@@ -1,6 +1,8 @@
 from flask import Flask, render_template, session,request, redirect, url_for, flash
 from nlp_utils import extract_order_items
 from models import db, bcrypt, User
+from supabase_client import create_user
+
 import os
 
 
@@ -42,12 +44,16 @@ def signup():
         email = request.form["email"]
         password = bcrypt.generate_password_hash(request.form["password"]).decode("utf-8")
 
-        user = User(username=username, email=email, password=password)
-        db.session.add(user)
-        db.session.commit()
-        flash("Account created! You can now log in.")
-        return redirect(url_for("login"))
+        response = create_user(username, email, password)
+        if response.data:
+            flash("Account created! You can now log in.")
+            return redirect(url_for("login"))
+        else:
+            flash("Error creating account.")
+            return redirect(url_for("signup"))
+
     return render_template("signup.html")
+
 
 
 @app.route("/home")
