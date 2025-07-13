@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}The Harvest Store{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+  <!-- Inside <body> -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Harvest Store</a>
+    <div class="d-flex">
+      {% if session.username %}
+        <span class="navbar-text me-3 text-white">
+          Logged in as {{ session.username }}
+        </span>
+        <a class="btn btn-outline-light" href="/logout">Logout</a>
+      {% else %}
+        <a class="btn btn-light me-2" href="/login">Login</a>
+        <a class="btn btn-outline-light" href="/signup">Sign Up</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+
+  <div class="container mt-4">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

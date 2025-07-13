@@ -1,0 +1,29 @@
+<!-- templates/index.html -->
+ {% extends "base.html" %}
+
+{% block title %} The Harvest Store | Home{% endblock %}
+
+{% block content %}
+<div class="container"> 
+
+</div>
+<div class="container">
+  <h1>Welcome to The Harvest Store</h1>
+  
+  <!-- User interface for login and signup -->
+  {% if session.username %}
+    <p>Welcome, {{ session.username }} | <a href="/logout">Logout</a></p>
+  {% else %}
+    <a href="/login">Login</a> | <a href="/signup">Signup</a>
+  {% endif %}
+  </div>
+
+
+{% endblock %}
+{% block footer %}
+  <footer>
+    <p>&copy; 2025 The Harvest Store</p>
+  </footer>
+{% endblock %}
+
+

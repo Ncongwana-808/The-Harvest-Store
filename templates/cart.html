@@ -1,0 +1,44 @@
+<!-- templates/cart.html -->
+{% extends "base.html" %}
+
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+  <h1>Your Shopping Cart</h1>
+  
+  {% if not cart %}
+    <p>Your cart is empty. <a href="/home">Continue shopping</a>.</p>
+  {% else %}
+    <ul>
+      {% for item in cart %}
+        <li>{{ item.product.name }} - {{ item.quantity }} x R{{ item.product.price }}</li>
+      {% endfor %}
+    </ul>
+    <p>Total: R{{ total_price }}</p>
+    <a href="/checkout" class="btn btn-primary">Proceed to Checkout</a>
+  {% endif %}
+
+
+{% block main_content %}
+  <h2 class="mt-4">Your Cart Items</h2>
+  <p>Here are the items you have added to your cart:</p>
+  
+  <!-- Display cart items -->
+  {% if cart %}
+    <ul>
+      {% for item in cart %}
+        <li>{{ item.product.name }} - {{ item.quantity }} x R{{ item.product.price }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+{% endblock %}
+{% block footer %}
+  <footer>
+    <p>&copy; 2025 The Harvest Store</p>
+  </footer>
+{% endblock %}
+{% endblock %}
+
+

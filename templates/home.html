@@ -1,0 +1,58 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <h1>Welcome to The Harvest Store</h1>
+
+  {% if session.username %}
+    <p>Welcome, {{ session.username }} | <a href="/logout">Logout</a></p>
+  {% else %}
+    <p class="mt-3">Already have an account? <a href="/login">Login here</a>.</p>
+    <p class="mt-3">New to The Harvest Store? <a href="/signup">Signup here</a>.</p>
+  {% endif %}
+
+  <h2 class="mt-4">Featured Products</h2>
+  <p>Check out our latest products below:</p>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Tomatoes</h3>
+      <p>Fresh and organic tomatoes.</p>
+      <p>Price: R20</p>
+      <a href="/product/1" class="btn btn-success">View Product</a>
+    </div>
+    <div class="col-md-4">
+      <h3>Bananas</h3>
+      <p>Sweet and ripe bananas.</p>
+      <p>Price: R15</p>
+      <a href="/product/2" class="btn btn-success">View Product</a>
+    </div>
+    <div class="col-md-4">
+      <h3>Apples</h3>
+      <p>Crisp and juicy apples.</p>
+      <p>Price: R25</p>
+      <a href="/product/3" class="btn btn-success">View Product</a>
+    </div>
+  </div>
+
+  <h3 class="mt-5">More Products</h3>
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Carrots</h3>
+      <p>Delicious and crunchy carrots.</p>
+      <p>Price: R10</p>
+      <a href="/product/4" class="btn btn-success">View Product</a>
+    </div>
+  </div>
+
+  <a href="/cart" class="btn btn-outline-success mt-3">View Cart</a>
+    <a href="/checkout" class="btn btn-primary mt-3">Proceed to Checkout</a>
+
+{% endblock %}
+{% block footer %}
+  <footer>
+    <p>&copy; 2025 The Harvest Store</p>
+  </footer>
+{% endblock %}
