@@ -105,7 +105,46 @@ def cart():
     if "user_id" not in session:
         flash("Please log in to view your cart.")
         return redirect(url_for("login"))
-    return render_template("cart.html")
+    cart = session.get("cart", [])
+    total_price = sum(item["product"]["price"] * item["quantity"] for item in cart)
+    return render_template("cart.html", cart=cart, total_price=total_price)
+
+@app.route("/cart/add/<string:product_id>")  # Changed from <int:product_id>
+def add_to_cart(product_id):
+    if "user_id" not in session:
+        flash("Please log in to add items to your cart.")
+        return redirect(url_for("login"))
+
+    response = supabase.table("products").select("*").eq("id", product_id).single().execute()
+    product = response.data
+
+    if not product:
+        flash("Product not found.")
+        return redirect(url_for("home"))
+
+    cart = session.get("cart", [])
+
+    # Prevent duplicate entries
+    for item in cart:
+        if item["product"]["id"] == product_id:
+            flash(f'{product["name"]} is already in your cart.')
+            session["cart"] = cart
+            return redirect(url_for("home"))
+
+    cart.append({"product": product, "quantity": 1})
+    session["cart"] = cart
+    flash(f'Added {product["name"]} to cart.')
+    return redirect(url_for("home"))
+
+@app.route("/cart/remove/<string:product_id>")
+def remove_from_cart(product_id):
+    cart = session.get("cart", [])
+    cart = [item for item in cart if item["product"]["id"] != product_id]
+    session["cart"] = cart
+    flash("Item removed from cart.")
+    return redirect(url_for("cart"))
+
+
 
 @app.route("/checkout", methods=["GET", "POST"])
 def checkout():

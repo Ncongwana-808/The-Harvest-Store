@@ -28,11 +28,21 @@
     <ul>
       {% for item in cart %}
         <li>{{ item.product.name }} - {{ item.quantity }} x R{{ item.product.price }}</li>
+        <p>Total: R{{ item.quantity * item.product.price }}</p>
+        <!-- Display product image -->
+        <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" class="img-fluid" style="max-width: 150px;">
+        <p>{{ item.product.description }}</p> 
+        
+        <!-- Remove button for each item -->
+        <a href="/cart/remove/{{ item.product.id }}" class="btn btn-danger btn-sm">Remove</a>
+
       {% endfor %}
     </ul>
   {% else %}
     <p>Your cart is empty.</p>
   {% endif %}
+
+
 {% endblock %}
 {% block footer %}
   <footer>

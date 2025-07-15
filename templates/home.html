@@ -3,6 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
 <div class="container">
   <h1>Welcome to The Harvest Store</h1>
   
@@ -16,6 +17,11 @@
   <!-- Product Grid -->
   <div class="product-grid">
     {% if products %}
+        {% set cart_ids = [] %}
+    {% if session.cart %}
+      {% set cart_ids = session.cart | map(attribute='product') | map(attribute='id') | list %}
+    {% endif %}
+
       {% for product in products %}
         <div class="product-card">
           <a href="/product/{{ product.id }}">
@@ -26,11 +32,22 @@
               <p class="product-price">${{ "%.2f"|format(product.price) }}</p>
             </div>
           </a>
-          <button class="add-to-cart" onclick="window.location.href='/cart/add/{{ product.id }}'">
-            Add to Cart
-          </button>
+          {% set in_cart = product.id in cart_ids %}
+              <button 
+                class="btn btn-primary add-to-cart"
+                {% if in_cart %}disabled{% endif %}
+                onclick="location.href='/cart/add/{{ product.id }}'"
+              >
+                {% if in_cart %}
+                  ✅ In Cart
+                {% else %}
+                  <i class="fas fa-cart-plus"></i> Add to Cart
+                {% endif %}
+              </button>
+
         </div>
       {% endfor %}
+      
     {% else %}
       <p>No products available at the moment.</p>
     {% endif %}
