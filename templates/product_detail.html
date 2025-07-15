@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+  <h1>{{ product.name }}</h1>
+  <p>{{ product.description }}</p>
+  <p>Price: R{{ product.price }}</p>
+
+  {% if session.username %}
+    <form action="/add_to_cart" method="post">
+      <input type="hidden" name="product_id" value="{{ product.id }}">
+      <button type="submit" class="btn btn-success">Add to Cart</button>
+    </form>
+  {% else %}
+    <p>Please <a href="/login">login</a> to add products to your cart.</p>
+  {% endif %}
+
+  <a href="/cart" class="btn btn-outline-success mt-3">View Cart</a>
+  <a href="/checkout" class="btn btn-primary mt-3">Proceed to Checkout</a>
+{% endblock %}
+{% block footer %}
+  <footer>
+    <p>&copy; 2025 The Harvest Store</p>
+  </footer>
+{% endblock %}
