@@ -144,23 +144,37 @@ def remove_from_cart(product_id):
     flash("Item removed from cart.")
     return redirect(url_for("cart"))
 
-
-
 @app.route("/checkout", methods=["GET", "POST"])
 def checkout():
     if "user_id" not in session:
         flash("Please log in to proceed to checkout.")
         return redirect(url_for("login"))
 
+    cart = session.get("cart", [])
+
     if request.method == "POST":
-        order_text = request.form["order_text"]
-        items = extract_order_items(order_text)
-        if items:
-            flash(f"Order items extracted: {items}")
-        else:
-            flash("No valid order items found.")
-        return redirect(url_for("home"))
-    return render_template("checkout.html")
+        name = request.form["name"]
+        address = request.form["address"]
+
+        total_price = sum(item["product"]["price"] * item["quantity"] for item in cart)
+
+        order = {
+            "name": name,
+            "address": address,
+            "items": cart,
+            "total_price": total_price
+        }
+
+        # Clear the cart after order
+        session["cart"] = []
+
+        flash("Order placed successfully!")
+        return render_template("checkout.html", order=order, cart=[])
+
+    return render_template("checkout.html", cart=cart)
+
+
+
 
 @app.route("/logout")
 def logout():
