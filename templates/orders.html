@@ -1,0 +1,32 @@
+<!-- order.html -->
+ {% extends "base.html" %}
+ {% block content %}
+  <!-- templates/orders.html -->
+<h2>Your Orders</h2>
+
+{% if orders %}
+  {% for order in orders %}
+    <div class="order">
+      <h3>Order ID: {{ order.id }} | Status: {{ order.status }}</h3>
+      <ul>
+        {% for item in items if item.order_id == order.id %}
+          <li>
+            {{ item.product.name }} - Quantity: {{ item.quantity }} - Price: R{{ item.product.price }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>You have no orders.</p>
+
+{% endif %}
+    <p><a href="/cart">Return to Cart</a></p>
+
+ {% endblock %}
+
+ {% block footer %}
+  <footer>
+    <p>&copy; 2025 The Harvest Store</p>
+  </footer>
+ {% endblock %}
